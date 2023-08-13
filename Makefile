@@ -46,8 +46,8 @@ extract-cd/casper/filesystem.manifest: .edit.timestamp .enter.timestamp
 	bash build/minimal.sh
 
 extract-cd/casper/filesystem.squashfs: extract-cd/casper/filesystem.manifest
-	rm extract-cd/casper/filesystem.squashfs
-	mksquashfs edit extract-cd/casper/filesystem.squashfs -always-use-fragments
+	rm extract-cd/casper/filesystem.squashfs || true
+	mksquashfs edit extract-cd/casper/filesystem.squashfs -b 131072 -always-use-fragments
 
 extract-cd/casper/filesystem.size: extract-cd/casper/filesystem.squashfs
 	printf $$(sudo du -sx --block-size=1 edit | cut -f1) > extract-cd/casper/filesystem.size
@@ -71,7 +71,7 @@ extract-cd/boot: .edit.timestamp .enter.timestamp
 	cp grub.cfg extract-cd/boot/grub/grub.cfg
 	cp loopback.cfg extract-cd/boot/grub/loopback.cfg
 
-extract-cd/md5sum.txt: extract-cd/casper/filesystem.squashfs -b 131072 extract-cd/casper/filesystem.size
+extract-cd/md5sum.txt: extract-cd/casper/filesystem.squashfs extract-cd/casper/filesystem.size
 	cd extract-cd; rm md5sum.txt; find -type f -print0 | sudo xargs -0 md5sum | /usr/bin/env grep -v 'md5sum.txt' | /usr/bin/env grep -v 'boot.catalog' | /usr/bin/env grep -v 'eltorito.img' > md5sum.txt
 
 build.iso: extract-cd/.disk extract-cd/boot extract-cd/README.diskdefines extract-cd/md5sum.txt
