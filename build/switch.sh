@@ -5,7 +5,7 @@
 wget https://gist.github.com/probonopd/2f53a49b021f270b9106d8f8bb1f199b/raw/customize-lubuntu.sh
 su lubuntu -c "/bin/sh -x ./customize-lubuntu.sh"
 rm ./customize-lubuntu.sh
-apt-get -y remove snapd || true
+apt-get -y remove snapd libreoffice-common || true
 rm -rf /var/lib/snapd || true
 apt-get -y install falkon
 
