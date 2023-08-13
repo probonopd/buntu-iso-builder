@@ -26,3 +26,12 @@ jobs:
          . ./fetch_build.conf
          ./fetch_build
          ls -lh .
+
+      - name: Upload Artifacts to GitHub Releases
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            rolling*iso*
+          tag_name: continuous
+          release_name: Continuous
+          draft: false
