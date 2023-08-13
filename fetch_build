@@ -3,6 +3,7 @@
 [[ "$EUID" -eq "0" ]] || { sudo -p "Please enter your password to continue: " "$0" "$@"; exit $?; }
 
 set -e
+set -x
 
 rm -f ubuntu.iso
 
