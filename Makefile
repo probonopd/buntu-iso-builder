@@ -8,13 +8,13 @@ enter: .edit.timestamp
 	cp /etc/resolv.conf edit/etc/
 	- cp edit/etc/hosts .hosts.backup || true
 	cp /etc/hosts edit/etc/
-	cp -r build edit/
+	cp -r scripts edit/
 	cp extract-cd/casper/initrd edit/boot/initrd.fromiso
 	cp extract-cd/casper/vmlinuz edit/boot/vmlinuz.fromiso
 	mount -o bind /run/ edit/run
 	mount -o bind /dev/ edit/dev
-	chmod +x ./build/build.sh ./build/switch.sh
-	chroot edit /build/build.sh
+	chmod +x ./scripts/build.sh ./scripts/switch.sh
+	chroot edit /scripts/build.sh
 	umount edit/dev/pts || true
 	umount edit/dev || true
 	umount edit/run || true
@@ -22,7 +22,7 @@ enter: .edit.timestamp
 	- mv .hosts.backup edit/etc/hosts || true
 	cp edit/boot/vmlinuz extract-cd/casper/vmlinuz
 	cp edit/boot/initrd.img extract-cd/casper/initrd
-	rm -rf edit/build/
+	rm -rf edit/scripts/
 	rm -rf edit/root/.bash_history
 	rm -rf edit/root/.cache
 	touch .enter.timestamp
