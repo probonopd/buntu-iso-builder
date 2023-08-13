@@ -26,5 +26,3 @@ jobs:
          . ./fetch_build.conf
          ./fetch_build
          ls -lh .
-         make iso
-         ls -lh .
