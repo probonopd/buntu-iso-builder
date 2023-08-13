@@ -22,8 +22,8 @@ jobs:
           
       - name: Build
         run: |
-         chmod +x ./fetch_build ./build/build.sh ./build/switch.sh
-         . ./fetch_build.conf
+         chmod +x ./fetch_build ./scripts/build.sh ./scripts/switch.sh
+         . ./build.conf
          ./fetch_build
          ls -lh .
 
