@@ -25,4 +25,6 @@ jobs:
          chmod +x ./fetch_build ./build/build.sh ./build/switch.sh ./build/minimal.sh
          . ./fetch_build.conf
          ./fetch_build
+         ls -lh .
          make iso
+         ls -lh .
