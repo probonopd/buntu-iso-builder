@@ -12,7 +12,7 @@ export LC_ALL=C
 KERNEL=$(ls -Art /lib/modules | tail -n 1)
 mv "/boot/initrd.fromiso" "/boot/initrd.img-$KERNEL"
 mv "/boot/vmlinuz.fromiso" "/boot/vmlinuz-$KERNEL"
-cd /build/
+cd /scripts/
 
 # Run the switch script
 bash switch.sh && apt-get purge -y --auto-remove
