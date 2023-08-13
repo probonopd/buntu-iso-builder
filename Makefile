@@ -83,6 +83,7 @@ build.iso: extract-cd/.disk extract-cd/boot extract-cd/README.diskdefines extrac
 		-partition_offset 16 /usr/share/cd-boot-images-amd64/tree \
 		-V "$$DISKNAME" -o "../$$OUT_ISO" .
 	source build.conf && rm -f "$$OUT_ISO.sha256sum" && sha256sum "$$OUT_ISO" > "$$OUT_ISO.sha256sum"
+	readlink -f "../$$OUT_ISO"
 
 iso: build.iso
 
