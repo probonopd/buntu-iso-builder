@@ -22,9 +22,9 @@ jobs:
           
       - name: Build
         run: |
-         chmod +x ./fetch_build ./scripts/build.sh ./scripts/switch.sh
+         chmod +x ./scripts/fetch_build.sh ./scripts/build.sh ./scripts/switch.sh
          . ./build.conf
-         ./fetch_build
+         ./scripts/fetch_build.sh
          ls -lh .
 
       - name: Delete pre-existing continuous GitHub Release
