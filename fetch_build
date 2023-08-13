@@ -14,3 +14,6 @@ if command -v axel 2> /dev/null; then
 	else
 		wget -q -O ubuntu.iso "$DOWNLOAD_ISO"
 fi
+
+sudo chmod +x ./build/build.sh ./build/switch.sh ./build/minimal.sh
+sudo make build.iso
