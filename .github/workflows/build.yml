@@ -18,7 +18,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y xorriso coreutils squashfs-tools git axel sed
+          sudo apt-get install -y xorriso coreutils squashfs-tools git axel sed cd-boot-images-amd64
           
       - name: Build
         run: |
