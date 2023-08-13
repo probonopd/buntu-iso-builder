@@ -22,7 +22,7 @@ jobs:
           
       - name: Build
         run: |
-         chmod +x ./fetch_build ./build/build.sh ./build/switch.sh ./build/minimal.sh
+         chmod +x ./fetch_build ./build/build.sh ./build/switch.sh
          . ./fetch_build.conf
          ./fetch_build
          ls -lh .
