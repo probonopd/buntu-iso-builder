@@ -29,7 +29,7 @@ enter: .edit.timestamp
 
 .edit.timestamp:
 	mkdir -p mnt
-	mount -o loop,rw ubuntu.iso mnt
+	mount -o loop,ro ubuntu.iso mnt
 	unsquashfs mnt/casper/filesystem.squashfs
 	mv squashfs-root edit
 	cp -r mnt/ extract-cd/ && rm -f extract-cd/casper/filesystem.squashfs extract-cd/casper/filesystem.squashfs.gpg
