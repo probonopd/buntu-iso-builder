@@ -67,8 +67,10 @@ extract-cd/.disk: .edit.timestamp .enter.timestamp
 	source build.conf && echo "$$RELEASE_URL" > extract-cd/.disk/release_notes_url
 
 extract-cd/boot: .edit.timestamp .enter.timestamp
-	cp grub.cfg extract-cd/boot/grub/grub.cfg
-	cp loopback.cfg extract-cd/boot/grub/loopback.cfg
+	sed -i '' -E '/menuentry "Try or Install/s/menuentry "[^"]+"/menuentry "Try or Install System"/' extract-cd/boot/grub/grub.cfg
+	sed -i '' -E '/menuentry "Rolling Rhino \(safe graphics\)"/s/menuentry "[^"]+"/menuentry "System (safe graphics)"/' extract-cd/boot/grub/grub.cfg
+	sed -i '' -E '/menuentry "Try or Install/s/menuentry "[^"]+"/menuentry "Try or Install System"/' extract-cd/boot/grub/loopback.cfg
+	sed -i '' -E '/menuentry "Rolling Rhino \(safe graphics\)"/s/menuentry "[^"]+"/menuentry "System (safe graphics)"/' extract-cd/boot/grub/loopback.cfg
 
 extract-cd/md5sum.txt: extract-cd/casper/filesystem.squashfs extract-cd/casper/filesystem.size
 	cd extract-cd; rm md5sum.txt; find -type f -print0 | sudo xargs -0 md5sum | /usr/bin/env grep -v 'md5sum.txt' | /usr/bin/env grep -v 'boot.catalog' | /usr/bin/env grep -v 'eltorito.img' > md5sum.txt
