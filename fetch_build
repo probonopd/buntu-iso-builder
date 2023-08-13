@@ -7,7 +7,7 @@ set -x
 
 rm -f ubuntu.iso
 
-source fetch_build.conf
+source build.conf
 
 if command -v axel 2> /dev/null; then
 		axel -qo ubuntu.iso "$DOWNLOAD_ISO"
