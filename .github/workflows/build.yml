@@ -27,13 +27,9 @@ jobs:
          ./fetch_build
          ls -lh .
 
-      - name: Delete pre-existing continuous GitHub Release
+      - name: Delete Existing Release and Tag
         run: |
-          RELEASE_ID=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/releases/tags/continuous" | jq -r '.id')
-          if [ "$RELEASE_ID" != "null" ]; then
-            echo "Deleting existing release..."
-            curl -X DELETE -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/releases/$RELEASE_ID"
-          fi
+          git push --delete origin continuous || true
 
       - name: Upload Artifacts to GitHub Releases
         uses: softprops/action-gh-release@v1
@@ -41,5 +37,5 @@ jobs:
           files: |
             rolling*iso*
           tag_name: continuous
-          release_name: Continuous
+          target_commitish: ${{ github.sha }}
           draft: false
