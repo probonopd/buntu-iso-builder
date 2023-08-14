@@ -17,7 +17,7 @@ apt-get -y install falkon baloo-kf5 libqalculate22 plasma-integration libqt5mult
 
 # Remove software
 apt-get -y remove plymouth-theme-lubuntu-text plymouth-theme-lubuntu-logo plymouth-theme-ubuntu-text pcmanfm-qt lxqt-panel 2048-qt geoclue-2.0 gcr gtk2-engines-pixbuf kdeconnect plasma-framework \
-vim-common htop libgtk-3-common libgtk2.0-common catdoc cracklib-runtime emacsen-common \
+vim-common htop libgtk-3-common libgtk2.0-common catdoc cracklib-runtime emacsen-common kde-cli-tools-data kde-config-updates plasma-discover-common \
 fonts-deva-extra fonts-gargi fonts-gubbi fonts-gujr fonts-gujr-extra fonts-guru fonts-guru-extra \
 'fonts-tlwg-*' 'fonts-smc-*' 'fonts-lohit-*' 'fonts-telu*' 'fonts-samyak-*' 'fonts-liberation*' \
 'fonts-sil*' 'fonts-beng*' 'fonts-dejavu*' 'fonts-kacst*' 'fonts-khmeros*' 'fonts-oryga*'  \
