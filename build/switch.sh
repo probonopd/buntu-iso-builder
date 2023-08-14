@@ -188,6 +188,43 @@ EOF
 
 cd -
 
+# Customize casper, this runs late in the boot process
+
+mkdir -p /usr/share/initramfs-tools/scripts/casper-bottom/
+cat > /usr/share/initramfs-tools/scripts/casper-bottom/70customize <<\EOF
+#!/bin/sh
+
+PREREQ=""
+DESCRIPTION="Customize..."
+
+prereqs()
+{
+       echo "$PREREQ"
+}
+
+case $1 in
+# get pre-requisites
+prereqs)
+       prereqs
+       exit 0
+       ;;
+esac
+
+. /scripts/casper-functions
+
+log_begin_msg "$DESCRIPTION"
+
+# mkdir -p /root/home/$USERNAME/.config
+# touch /root/home/$USERNAME/.config/ibus-mozc-gnome-initial-setup-done
+# chroot /root chown -R $USERNAME.$USERNAME /home/$USERNAME/.config
+
+rm -rf /home/$USERNAME/Desktop/*.desktop
+
+log_end_msg
+EOF
+chmod +x /usr/share/initramfs-tools/scripts/casper-bottom/70customize
+
+
 ############################################
 # Clean up system files
 ############################################
