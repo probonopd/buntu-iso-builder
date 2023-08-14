@@ -197,6 +197,9 @@ EOF
 
 cd -
 
+# KWin has unreasonable dependencies, pulls in half of Plasma (and more)
+apt-get -y install kwin-x11
+
 # Customize casper, this runs late in the boot process
 
 mkdir -p /usr/share/initramfs-tools/scripts/casper-bottom/
