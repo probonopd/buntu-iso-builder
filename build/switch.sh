@@ -9,10 +9,11 @@ apt-get -y remove snapd libreoffice-common || true
 rm -rf /var/lib/snapd || true
 
 # Install software
-apt-get -y install falkon baloo-kf5 libqalculate22 plasma-integration libqt5multimedia5 # elementary-xfce-icon-theme
+apt-get -y install falkon baloo-kf5 libqalculate22 plasma-integration libqt5multimedia5 plymouth-theme-spinner
+# elementary-xfce-icon-theme
 
 # Remove software
-apt-get -y remove 2048-qt geoclue-2.0 gcr gtk2-engines-pixbuf kdeconnect plasma-framework \
+apt-get -y remove plymouth-theme-lubuntu-text plymouth-theme-lubuntu-logo plymouth-theme-ubuntu-text pcmanfm-qt lxqt-panel 2048-qt geoclue-2.0 gcr gtk2-engines-pixbuf kdeconnect plasma-framework \
 vim-common htop libgtk-3-common libgtk2.0-common catdoc cracklib-runtime emacsen-common \
 fonts-deva-extra fonts-gargi fonts-gubbi fonts-gujr fonts-gujr-extra fonts-guru fonts-guru-extra
 # TODO: Remove more font spam
