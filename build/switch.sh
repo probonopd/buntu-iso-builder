@@ -198,7 +198,10 @@ EOF
 cd -
 
 # KWin has unreasonable dependencies, pulls in half of Plasma (and more)
-apt-get -y install kwin-x11
+# apt-get -y install kwin-x11
+# So try DDE KWin
+yes | sudo apt-add-repository ppa:ubuntudde-dev/stable
+sudo apt-get -y install dde-kwin
 
 # Customize casper, this runs late in the boot process
 
