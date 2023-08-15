@@ -38,10 +38,12 @@ cd /
 wget -c https://github.com/helloSystem/Menu/releases/download/continuous/Menu_Ubuntu.zip
 wget -c https://github.com/helloSystem/launch/releases/download/continuous/launch_Ubuntu.zip
 wget -c https://github.com/probonopd/Filer/releases/download/continuous/Filer_Ubuntu.zip
+wget -c https://github.com/helloSystem/QtPlugin/releases/download/continuous/QtPlugin_Ubuntu.zip
 sudo mkdir -p /System
 sudo unzip -o Menu_Ubuntu.zip -d /System
 sudo unzip -o Filer_Ubuntu.zip -d /System
 sudo unzip -o launch_Ubuntu.zip -d /
+sudo unzip -o QtPlugin_Ubuntu.zip -d /
 rm *.zip
 cd -
 
@@ -87,7 +89,7 @@ TERM=qterminal
 UBUNTU_MENUPROXY=1
 SUDO_ASKPASS=""
 GTK_MODULES="appmenu-gtk-module"
-QT_QPA_PLATFORMTHEME=kde
+QT_QPA_PLATFORMTHEME=panda
 EOF
 
 mkdir -p .config/qterminal.org/
