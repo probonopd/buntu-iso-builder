@@ -2,7 +2,7 @@
 
 Remasters a *buntu Live ISO with customizations using GitHub Actions.
 
-Specifically, it remasters a Lubuntu Live ISO with my [Filer](https://github.com/probonopd/Filer/) file manager and some [helloDesktop](https://hellosystem.github.io/docs/) components.
+Specifically, it remasters a Lubuntu Live ISO with my [Filer](https://github.com/probonopd/Filer/) file manager and some [helloDesktop](https://hellosystem.github.io/docs/) components. Currently this is mainly a testbed for those components (which have been developed for FreeBSD) on Linux.
 
 ## Features
 
