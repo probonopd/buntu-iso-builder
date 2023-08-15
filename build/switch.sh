@@ -206,6 +206,138 @@ sudo apt-get -y install dde-kwin
 # Customize casper, this runs late in the boot process
 
 mkdir -p /usr/share/initramfs-tools/scripts/casper-bottom/
+
+cat > /usr/share/initramfs-tools/scripts/casper-bottom/16international <<\EOF
+#!/bin/sh
+
+# Be verbose
+set -x
+
+PREREQ=""
+DESCRIPTION="Automatically set international settings..."
+
+prereqs()
+{
+       echo "$PREREQ"
+}
+
+case $1 in
+# get pre-requisites
+prereqs)
+       prereqs
+       exit 0
+       ;;
+esac
+
+. /scripts/casper-functions
+
+log_begin_msg "$DESCRIPTION"
+
+# The order of these is important; must be like the Raspberry Pi Keyboard and Hub numbering
+countries="GB GB FR ES US DE IT JP PT NO SE DK RU TR IL"
+languages="en en fr es en de it jp pt nn se fi ru tr he"
+timezones="Europe/London Europe/London Europe/Paris Europe/Madrid America/New_York Europe/Berlin Europe/Rome Asia/Tokyo Europe/Lisbon Europe/Oslo Europe/Stockholm Europe/Helsinki Europe/Moscow Europe/Istanbul Europe/Jerusalem"
+index_en_GB=1
+index_fr=2
+index_es=3
+index_en_US=4
+index_de=5
+index_it=6
+index_pt_PT=7
+index_nb=8
+index_se=10
+index_fi=11
+index_ru=12
+index_tr=13
+index_he=14
+
+export LD_LIBRARY_PATH=/root/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH # FIXME: Do not hardcode; use find... instead
+
+RPI_KBD_NUMBER=$(/root/usr/bin/lsusb | grep -o "RPI Wired Keyboard\ [0-9+]" | cut -d " " -f 4)
+if [ -n "$RPI_KBD_NUMBER" ]; then
+    echo "Raspberry Pi Keyboard and Hub detected"
+    echo "$RPI_KBD_NUMBER"
+    # 5 = German
+	
+	# Get the language and country at the specified index
+	selected_country=$(echo "$countries" | cut -d " " -f $((RPI_KBD_NUMBER + 1)))
+	selected_language=$(echo "$languages" | cut -d " " -f $((RPI_KBD_NUMBER + 1)))
+	selected_timezone=$(echo "$timezones" | cut -d " " -f $((RPI_KBD_NUMBER + 1)))
+	
+	# Print the selected country and language
+	LOCALE_PREFIX="${selected_language}_${selected_country}"
+	echo "$LOCALE_PREFIX"
+	KEYBOARD_LAYOUT="$selected_language"
+	echo "$KEYBOARD_LAYOUT"
+	echo "$selected_timezone"
+fi
+
+mount -t efivarfs efivarfs /sys/firmware/efi/efivars # NOTE: efivarfs != efivars
+EFI_PREV_LANG_KBD=$(cat '/sys/firmware/efi/efivars/prev-lang:kbd-7c436110-ab2a-4bbb-a880-fe41995c9f82')
+if [ -n "$EFI_PREV_LANG_KBD" ]; then
+    echo "prev-lang:kbd EFI variable detected"
+    echo "${EFI_PREV_LANG_KBD#?}"
+    # de:3 = German
+    
+    search_language=$(echo "${EFI_PREV_LANG_KBD#?}" | cut -d ":" -f 1)
+    
+    # Construct the variable name for the search language
+	search_variable="index_$search_language"
+	
+	# Get the index for the search language using eval
+	eval search_index="\$$search_variable"
+	
+	if [ -n "$search_index" ]; then
+    	echo "Language '$search_language' found at index $search_index"
+		# Get the language and country at the specified index
+		selected_country=$(echo "$countries" | cut -d " " -f $((search_index + 1)))
+		selected_language=$(echo "$languages" | cut -d " " -f $((search_index + 1)))
+		selected_timezone=$(echo "$timezones" | cut -d " " -f $((search_index + 1)))
+		
+		# Print the selected country and language
+		LOCALE_PREFIX="${selected_language}_${selected_country}"
+		echo "$LOCALE_PREFIX"
+		KEYBOARD_LAYOUT="$selected_language"
+		echo "$KEYBOARD_LAYOUT"
+		echo "$selected_timezone"
+	else
+    	echo "Language '$search_language' not found"
+	fi
+	
+fi
+
+# LOCALE_PREFIX="de_DE" # The desired locale (application language), e.g., "de_DE"
+# KEYBOARD_LAYOUT="de" # The desired keyboard layout (keyboard language), e.g., "de"
+
+# Set locale (application language) if it has not already been set
+# This overrides 14locale which ran before
+LEN=$(wc -l /root/etc/locale.gen | cut -d " " -f 1)
+if [ "$LEN" -gt 1 ]; then
+    LOCALE_TO_SET="${LOCALE_PREFIX}.UTF-8"
+    echo "$LOCALE_TO_SET" > /root/etc/default/locale
+    echo "$LOCALE_TO_SET UTF-8" > /root/etc/locale.gen
+    chroot /root /usr/sbin/locale-gen --keep-existing
+fi
+
+# Set keyboard layout (keyboard language)
+# 19keyboard which runs later may override this
+# TODO: May also want to customize XKBMODEL, XKBVARIANT, XKBOPTIONS; see: man keyboard(5)
+sed -i -e "s|^XKBLAYOUT=.*|XKBLAYOUT=\"$KEYBOARD_LAYOUT\"|g" /root/etc/default/keyboard
+
+# Set timezone, e.g., "Etc/UTC" or "Europe/Berlin"
+if [ -n "$timezone" ]; then
+  echo "$selected_timezone" > /root/etc/timezone
+fi
+
+# Be verbose
+cat /root/etc/default/locale
+cat /root/etc/locale.gen
+cat /root/etc/default/keyboard
+
+log_end_msg
+EOF
+chmod +x /usr/share/initramfs-tools/scripts/casper-bottom/16international
+
 cat > /usr/share/initramfs-tools/scripts/casper-bottom/70customize <<\EOF
 #!/bin/sh
 
