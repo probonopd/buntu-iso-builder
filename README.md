@@ -8,7 +8,7 @@ Specifically, it remasters a Lubuntu Live ISO with my [Filer](https://github.com
 
 * Runs LxQt but with the helloDesktop core components [launch](https://github.com/helloSystem/launch/), [Menu](https://github.com/helloSystem/Menu), and [Filer](https://github.com/probonopd/Filer/) instead of the LxQt counterparts
 * Tries to avoid anything Glib/Gtk/Gnome
-* Automatically detects the keyboard layout (keyboard language) based on a Raspberry Pi Keyboard and Hub or the EFI variable `prev-lang:kbd` ((details)[github.com/probonopd/casper-language-autodetection])
+* Automatically detects the keyboard layout (keyboard language) based on a Raspberry Pi Keyboard and Hub or the EFI variable `prev-lang:kbd` ([details](github.com/probonopd/casper-language-autodetection))
 
 ## Acknowledgements
 
