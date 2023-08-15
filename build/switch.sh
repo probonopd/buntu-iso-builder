@@ -12,8 +12,14 @@ apt-get -y remove snapd libreoffice-common || true
 rm -rf /var/lib/snapd || true
 
 # Install software
-apt-get -y install falkon baloo-kf5 libqalculate22 plasma-integration libqt5multimedia5 plymouth-theme-spinner
+apt-get -y install falkon baloo-kf5 libqalculate22 plasma-integration libqt5multimedia5 plymouth-theme-spinner \
+python3-xattr python3-psutil # for desktop2app
 # elementary-xfce-icon-theme
+
+# desktop2app
+ln -s /usr/share/applications /usr/local/share/
+( cd /usr/bin ; wget -q https://raw.githubusercontent.com/helloSystem/ISO/experimental/overlays/uzip/hello/files/usr/local/bin/desktop2app )
+chmod +x /usr/bin/desktop2app
 
 # Remove software
 apt-get -y remove plymouth-theme-lubuntu-text plymouth-theme-lubuntu-logo plymouth-theme-ubuntu-text pcmanfm-qt \
@@ -44,6 +50,10 @@ sudo ln -sf /usr/bin/lxqt-leave /System/Menu.app/Shutdown
 mkdir -p /etc/skel/
 
 cd /etc/skel/
+
+mkdir -p Desktop
+desktop2app /usr/share/applications/org.kde.falkon.desktop Desktop/
+desktop2app /usr/share/applications/featherpad.desktop Desktop/
 
 mkdir -p .config/autostart/
 cat > .config/autostart/Filer.desktop <<\EOF
