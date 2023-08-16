@@ -11,6 +11,13 @@
 apt-get -y remove snapd libreoffice-common || true
 rm -rf /var/lib/snapd || true
 
+# Disable snap
+cat > /etc/apt/preferences.d/nosnap.pref <<\EOF
+Package: snapd
+Pin: release a=*
+Pin-Priority: -10
+EOF
+
 # Install software
 apt-get -y install falkon baloo-kf5 libqalculate22 plasma-integration libqt5multimedia5 plymouth-theme-spinner \
 python3-xattr python3-psutil # for desktop2app
