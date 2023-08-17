@@ -333,7 +333,7 @@ fi
 LEN=$(wc -l /root/etc/locale.gen | cut -d " " -f 1)
 if [ "$LEN" -gt 1 ]; then
     LOCALE_TO_SET="${LOCALE_PREFIX}.UTF-8"
-    echo "$LOCALE_TO_SET" > /root/etc/default/locale
+    echo "LANG=\"$LOCALE_TO_SET\"" > /root/etc/default/locale
     echo "$LOCALE_TO_SET UTF-8" > /root/etc/locale.gen
     chroot /root /usr/sbin/locale-gen --keep-existing
 fi
