@@ -27,6 +27,8 @@ python3-xattr python3-psutil # for desktop2app
 ln -s /usr/share/applications /usr/local/share/
 ( cd /usr/bin ; wget -q https://raw.githubusercontent.com/helloSystem/ISO/experimental/overlays/uzip/hello/files/usr/local/bin/desktop2app )
 chmod +x /usr/bin/desktop2app
+mkdir -p /root/Applications
+chroot /root find /usr/share/applications/*.desktop -exec desktop2app {} /Applications/ \;
 
 # Remove software
 apt-get -y remove plymouth-theme-lubuntu-text plymouth-theme-lubuntu-logo plymouth-theme-ubuntu-text pcmanfm-qt \
