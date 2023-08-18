@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set +x # Be verbose
+
 ############################################
 # Customize
 ############################################
@@ -28,7 +30,7 @@ ln -s /usr/share/applications /usr/local/share/
 ( cd /usr/bin ; wget -q https://raw.githubusercontent.com/helloSystem/ISO/experimental/overlays/uzip/hello/files/usr/local/bin/desktop2app )
 chmod +x /usr/bin/desktop2app
 chroot /root mkdir -p /Applications
-# chroot /root find /usr/share/applications/*.desktop -exec export QT_QPA_PLATFORM=minimal desktop2app {} /Applications/ \;
+# chroot /root find /usr/share/applications/*.desktop -exec QT_QPA_PLATFORM=minimal desktop2app {} /Applications/ \;
 chroot /root find /usr/share/applications -name '*.desktop' -exec sh -c 'export QT_QPA_PLATFORM=minimal; desktop2app "$1" /Applications/' sh {} \;
 
 # Remove software
