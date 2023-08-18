@@ -19,7 +19,7 @@ Pin-Priority: -10
 EOF
 
 # Install software
-apt-get -y install falkon baloo-kf5 libqalculate22 plasma-integration libqt5multimedia5 plymouth-theme-spinner \
+apt-get -y install libfuse2 falkon baloo-kf5 libqalculate22 plasma-integration libqt5multimedia5 plymouth-theme-spinner \
 python3-xattr python3-psutil # for desktop2app
 # elementary-xfce-icon-theme
 
@@ -222,7 +222,9 @@ cd -
 yes | sudo apt-add-repository ppa:ubuntudde-dev/stable
 sudo apt-get -y install dde-kwin
 
+############################################
 # Customize casper, this runs late in the boot process
+############################################
 
 mkdir -p /usr/share/initramfs-tools/scripts/casper-bottom/
 
@@ -390,6 +392,65 @@ log_end_msg
 EOF
 chmod +x /usr/share/initramfs-tools/scripts/casper-bottom/70customize
 
+############################################
+
+cat > /usr/share/initramfs-tools/scripts/casper-bottom/20controlswap <<\EOF
+
+#!/bin/sh
+
+# Be verbose
+set -x
+
+PREREQ=""
+DESCRIPTION="Swapping Control key..."
+
+prereqs()
+{
+       echo "$PREREQ"
+}
+
+case $1 in
+# get pre-requisites
+prereqs)
+       prereqs
+       exit 0
+       ;;
+esac
+
+. /scripts/casper-functions
+
+log_begin_msg "$DESCRIPTION"
+
+# 19keyboard overrides this, so we need to run this after it
+
+# Get existing XKBOPTIONS
+CONFIGFILE=
+if [ -f /root/etc/default/keyboard ]; then
+        CONFIGFILE=/etc/default/keyboard
+elif [ -f /root/etc/default/console-setup ]; then
+        CONFIGFILE=/etc/default/console-setup
+fi
+csoptions=$(grep "^XKBOPTIONS=.*" "$CONFIGFILE" | cut -d "=" -f 2)
+# Make the Command key the key left to the space bar
+APPLE_KEYBOARD_DETECTED=$(lsusb | grep Apple | grep Keyboard)
+if [ -z "${APPLE_KEYBOARD_DETECTED}" ] ; then
+  # On PC keyboards, swap Ctrl and Alt
+  # FIXME: How to do this also for the right-hand side?
+  # setxkbmap -option ctrl:swap_lalt_lctl
+  csoptions="${csoptions:+$csoptions,}ctrl:swap_lalt_lctl"
+else
+  # On Apple keyboards, swap Ctrl and Command
+  # setxkbmap -option ctrl:swap_lwin_lctl,ctrl:swap_rwin_rctl
+  csoptions="${csoptions:+$csoptions,}ctrl:swap_lwin_lctl,ctrl:swap_rwin_rctl"
+fi
+
+ csoptions="${csoptions:+$csoptions,}lv3:ralt_switch"
+ chroot /root sed -i "s/^XKBOPTIONS=.*/XKBOPTIONS=\"$csoptions\"/" \
+                                "$CONFIGFILE"
+
+log_end_msg
+EOF
+chmod +x /usr/share/initramfs-tools/scripts/casper-bottom/20controlswap
 
 ############################################
 # Clean up system files
