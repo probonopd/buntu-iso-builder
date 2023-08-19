@@ -37,13 +37,27 @@ find /usr/share/applications/*.desktop -exec desktop2app {} /Applications/ \;
 apt-get -y remove plymouth-theme-lubuntu-text plymouth-theme-lubuntu-logo plymouth-theme-ubuntu-text pcmanfm-qt \
 lxqt-panel 2048-qt geoclue-2.0 gcr gtk2-engines-pixbuf kdeconnect plasma-framework \
 vim-common htop libgtk-3-common libgtk2.0-common catdoc cracklib-runtime emacsen-common kde-cli-tools-data \
-kde-config-updates plasma-discover-common
+kde-config-updates plasma-discover-common fonts-urw-base35
 
 # Remove font spam
 apt -y remove  fonts-deva-extra fonts-gargi fonts-gubbi fonts-gujr fonts-gujr-extra fonts-guru fonts-guru-extra \
 'fonts-tlwg-*' 'fonts-smc-*' 'fonts-lohit-*' 'fonts-telu*' 'fonts-samyak-*' 'fonts-liberation*' \
 'fonts-sil*' 'fonts-beng*' 'fonts-dejavu*' 'fonts-kacst*' 'fonts-khmeros*' 'fonts-oryga*'  \
 'fonts-pagul*' 'fonts-lklug*' 'fonts-lao*' 'fonts-tibetan*'
+
+# URW fonts including Nimbus Sans
+mkdir -p "/usr/share/fonts/TTF/"
+wget -c -q https://github.com/ArtifexSoftware/urw-base35-fonts/archive/20200910.zip
+unzip -q 20200910.zip
+mkdir -p "/usr/local/share/fonts/TTF/"
+cp -R urw-base35-fonts-20200910/fonts/*.ttf "/usr/share/fonts/TTF/"
+rm -rf urw-base35-fonts-20200910/ 20200910.zip
+
+# Inter font, needed for proper special characters in menus
+wget -c -q https://github.com/rsms/inter/releases/download/v3.19/Inter-3.19.zip
+unzip Inter-3.19.zip
+mv 'Inter Desktop/Inter-V.ttf' "/usr/share/fonts/TTF/"
+rm -rf "Inter *"
 
 # Download and install components
 cd /
@@ -224,8 +238,8 @@ cd -
 # KWin has unreasonable dependencies, pulls in half of Plasma (and more)
 # apt-get -y install kwin-x11
 # So try DDE KWin
-yes | sudo apt-add-repository ppa:ubuntudde-dev/stable
-sudo apt-get -y install dde-kwin
+# yes | sudo apt-add-repository ppa:ubuntudde-dev/stable
+#  sudo apt-get -y install dde-kwin
 
 ############################################
 # Customize casper, this runs late in the boot process
