@@ -246,6 +246,12 @@ cd -
 ############################################
 
 # UDisks2 is Glib/Gnome centric and is to be avoided
+# Evidence: It is hosted at https://github.com/storaged-project, they say "Bugs should be reported to bugzilla.redhat.com".
+# blivet-gui is only available for Gtk, etc. UDisks2 is a Red Hat project through and through, albeit in disguise.
+# In typical Red Hat manner it is made to seem like a community project but in fact it is made for Gnome first and foremost.
+# We don't want dependencies such as systemd, consolekit, policykit, dbus, udisks, gvfs
+# that make everything complicated
+# NOTE: Possibly need to look into 
 
 cat > /etc/udev/rules.d/99-automount-script.rules <<\EOF
 ACTION=="add|remove", KERNEL=="sd[a-z]*|sr[0-9]*|mmcblk[0-9]*|nvme[0-9]*", ENV{UDISKS_IGNORE}="1", RUN+="/usr/bin/automount-script %k %E{ACTION}"
