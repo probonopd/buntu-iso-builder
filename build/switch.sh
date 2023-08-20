@@ -245,8 +245,10 @@ cd -
 # Automount
 ############################################
 
-cat > /etc/udev/rules.d/99-automount.rules <<\EOF
-ACTION=="add|remove", KERNEL=="sd[a-z]*|sr[0-9]*|mmcblk[0-9]*|nvme[0-9]*", ENV{UDISKS_IGNORE}="1", RUN+="/usr/local/bin/automount-script %k %E{ACTION}"
+# UDisks2 is Glib/Gnome centric and is to be avoided
+
+cat > /etc/udev/rules.d/99-automount-script.rules <<\EOF
+ACTION=="add|remove", KERNEL=="sd[a-z]*|sr[0-9]*|mmcblk[0-9]*|nvme[0-9]*", ENV{UDISKS_IGNORE}="1", RUN+="/usr/bin/automount-script %k %E{ACTION}"
 EOF
 
 cat > /usr/bin/automount-script <<\EOF
