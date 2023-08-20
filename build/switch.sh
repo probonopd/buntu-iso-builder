@@ -242,6 +242,59 @@ cd -
 #  sudo apt-get -y install dde-kwin
 
 ############################################
+# Automount
+############################################
+
+cat > /etc/udev/rules.d/99-automount.rules <<\EOF
+ACTION=="add|remove", KERNEL=="sd[a-z]*|sr[0-9]*|mmcblk[0-9]*|nvme[0-9]*", ENV{UDISKS_IGNORE}="1", RUN+="/usr/local/bin/automount-script %k %E{ACTION}"
+EOF
+
+cat > /usr/bin/automount-script <<\EOF
+#!/bin/bash
+
+DEVNAME="$1"
+ACTION="$2"
+
+# Get the filesystem label
+LABEL=$(lsblk -o LABEL -n "/dev/$DEVNAME")
+
+if [ -z "$LABEL" ]; then
+    echo "No label found for device $DEVNAME"
+    exit 1
+fi
+
+MOUNTPOINT="/mnt/$LABEL"
+
+if [ "$ACTION" == "add" ]; then
+    if [ ! -e "$MOUNTPOINT" ]; then
+        mkdir -p "$MOUNTPOINT"
+        mount "/dev/$DEVNAME" "$MOUNTPOINT"
+        if [ $? -eq 0 ]; then
+            echo "Device $DEVNAME mounted at $MOUNTPOINT"
+        else
+            echo "Failed to mount device $DEVNAME"
+            exit 1
+        fi
+    else
+        echo "Mount point $MOUNTPOINT already exists for device $DEVNAME"
+    fi
+elif [ "$ACTION" == "remove" ]; then
+    if [ -e "$MOUNTPOINT" ]; then
+        rmdir "$MOUNTPOINT"
+        if [ $? -eq 0 ]; then
+            echo "Mount point $MOUNTPOINT removed (device $DEVNAME unmounted)"
+        else
+            echo "Failed to remove mount point $MOUNTPOINT"
+        fi
+    fi
+fi
+EOF
+chmod +x /usr/bin/automount-script
+
+sudo udevadm control --reload-rules
+sudo udevadm trigger
+
+############################################
 # Customize casper, this runs late in the boot process
 ############################################
 
