@@ -29,7 +29,8 @@ python3-xattr python3-psutil # for desktop2app
 ln -s /usr/share/applications /usr/local/share/
 ( cd /usr/bin ; wget -q https://raw.githubusercontent.com/helloSystem/ISO/experimental/overlays/uzip/hello/files/usr/local/bin/desktop2app )
 chmod +x /usr/bin/desktop2app
-export QT_QPA_PLATFORM=minimal
+export QT_QPA_PLATFORMTHEME=panda # For desktop2app to find icons from the theme
+export QT_QPA_PLATFORM=minimal # For desktop2app to find icons from the theme
 mkdir -p /Applications
 find /usr/share/applications/*.desktop -exec desktop2app {} /Applications/ \;
 
