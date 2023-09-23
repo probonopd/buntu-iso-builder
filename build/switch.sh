@@ -7,7 +7,7 @@ set +x # Be verbose
 ############################################
 
 # Remove branding
-/usr/share/plymouth/themes/spinner/watermark.png
+rm /usr/share/plymouth/themes/spinner/watermark.png
 
 # Remove snap
 apt-get -y remove snapd libreoffice-common || true
