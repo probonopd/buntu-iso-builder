@@ -6,6 +6,12 @@ set +x # Be verbose
 # Customize
 ############################################
 
+# Configure KWin window decorations
+cd /etc/xdg
+wget -c -q "https://github.com/helloSystem/BreezeEnhanced/raw/master/etc/xdg/breezerc"
+wget -c -q "https://github.com/helloSystem/BreezeEnhanced/raw/master/etc/xdg/kwinrc"
+cd -
+
 # Remove branding
 rm /usr/share/plymouth/themes/spinner/watermark.png
 
