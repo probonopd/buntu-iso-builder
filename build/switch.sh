@@ -66,6 +66,12 @@ unzip Inter-3.19.zip
 mv 'Inter Desktop/Inter-V.ttf' "/usr/share/fonts/TTF/"
 rm -rf "Inter *"
 
+# Icons
+cd /usr/share/icons
+rm -rf default
+ln -s elementary-xfce default
+cd -
+
 # Download and install components
 cd /
 wget -c https://github.com/probonopd/buntu-iso-builder/releases/download/assets/KWin_Ubuntu.zip
