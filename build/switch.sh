@@ -22,8 +22,9 @@ EOF
 
 # Install software
 apt-get -y install libfuse2 falkon baloo-kf5 libqalculate22 plasma-integration libqt5multimedia5 plymouth-theme-spinner \
-python3-xattr python3-psutil # for desktop2app
-# elementary-xfce-icon-theme
+python3-xattr python3-psutil \ # for desktop2app
+libqaccessibilityclient-qt5-0 libxcb-cursor0 \ # for KWin
+elementary-xfce-icon-theme
 
 # desktop2app
 ln -s /usr/share/applications /usr/local/share/
@@ -62,11 +63,13 @@ rm -rf "Inter *"
 
 # Download and install components
 cd /
+wget -c https://github.com/probonopd/buntu-iso-builder/releases/download/assets/KWin_Ubuntu.zip
 wget -c https://github.com/helloSystem/Menu/releases/download/continuous/Menu_Ubuntu.zip
 wget -c https://github.com/helloSystem/launch/releases/download/continuous/launch_Ubuntu.zip
 wget -c https://github.com/probonopd/Filer/releases/download/continuous/Filer_Ubuntu.zip
 wget -c https://github.com/helloSystem/QtPlugin/releases/download/continuous/QtPlugin_Ubuntu.zip
 sudo mkdir -p /System
+sudo unzip -o KWin_Ubuntu.zip -d /System
 sudo unzip -o Menu_Ubuntu.zip -d /System
 sudo unzip -o Filer_Ubuntu.zip -d /System
 sudo unzip -o launch_Ubuntu.zip -d /
@@ -235,12 +238,6 @@ Zoom%20reset=Ctrl+0
 EOF
 
 cd -
-
-# KWin has unreasonable dependencies, pulls in half of Plasma (and more)
-# apt-get -y install kwin-x11
-# So try DDE KWin
-# yes | sudo apt-add-repository ppa:ubuntudde-dev/stable
-#  sudo apt-get -y install dde-kwin
 
 ############################################
 # Automount
@@ -429,6 +426,7 @@ sed -i -e "s|^XKBLAYOUT=.*|XKBLAYOUT=\"$KEYBOARD_LAYOUT\"|g" /root/etc/default/k
 # Set timezone, e.g., "Etc/UTC" or "Europe/Berlin"
 if [ -n "$timezone" ]; then
   echo "$selected_timezone" > /root/etc/timezone
+  timedatectl set-timezone "$selected_timezone"
 fi
 
 # Be verbose
