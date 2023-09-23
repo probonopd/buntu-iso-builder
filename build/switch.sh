@@ -88,6 +88,15 @@ desktop2app /usr/share/applications/org.kde.falkon.desktop Desktop/
 desktop2app /usr/share/applications/featherpad.desktop Desktop/
 
 mkdir -p .config/autostart/
+cat > .config/autostart/KWin.desktop <<\EOF
+[Desktop Entry]
+Exec=launch KWin
+Name=KWin
+Type=Application
+Version=1.0
+EOF
+
+mkdir -p .config/autostart/
 cat > .config/autostart/Filer.desktop <<\EOF
 [Desktop Entry]
 Exec=launch Filer
