@@ -22,9 +22,7 @@ EOF
 
 # Install software
 apt-get -y install libfuse2 falkon baloo-kf5 libqalculate22 plasma-integration libqt5multimedia5 plymouth-theme-spinner \
-python3-xattr python3-psutil \ # for desktop2app
-libqaccessibilityclient-qt5-0 libxcb-cursor0 \ # for KWin
-elementary-xfce-icon-theme
+python3-xattr python3-psutil libqaccessibilityclient-qt5-0 libxcb-cursor0 elementary-xfce-icon-theme
 
 # desktop2app
 ln -s /usr/share/applications /usr/local/share/
