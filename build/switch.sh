@@ -31,15 +31,6 @@ apt-get -y install libfuse2 falkon baloo-kf5 libqalculate22 plasma-integration l
 python3-xattr python3-psutil libqaccessibilityclient-qt5-0 libxcb-cursor0 elementary-xfce-icon-theme libgtk-3-0
 # libgtk-3-0 is there so that many AppImages can run; could be removed otherwise
 
-# desktop2app
-ln -s /usr/share/applications /usr/local/share/
-( cd /usr/bin ; wget -q https://raw.githubusercontent.com/helloSystem/ISO/experimental/overlays/uzip/hello/files/usr/local/bin/desktop2app )
-chmod +x /usr/bin/desktop2app
-export QT_QPA_PLATFORMTHEME=panda # For desktop2app to find icons from the theme
-export QT_QPA_PLATFORM=minimal # For desktop2app to find icons from the theme
-mkdir -p /Applications
-find /usr/share/applications/*.desktop -exec desktop2app {} /Applications/ \;
-
 # Remove software
 apt-get -y remove plymouth-theme-lubuntu-text plymouth-theme-lubuntu-logo plymouth-theme-ubuntu-text pcmanfm-qt \
 lxqt-panel 2048-qt geoclue-2.0 gcr gtk2-engines-pixbuf kdeconnect plasma-framework \
@@ -71,6 +62,15 @@ cd /usr/share/icons
 rm -rf default
 ln -s elementary-xfce default
 cd -
+
+# desktop2app
+ln -s /usr/share/applications /usr/local/share/
+( cd /usr/bin ; wget -q https://raw.githubusercontent.com/helloSystem/ISO/experimental/overlays/uzip/hello/files/usr/local/bin/desktop2app )
+chmod +x /usr/bin/desktop2app
+export QT_QPA_PLATFORMTHEME=panda # For desktop2app to find icons from the theme
+export QT_QPA_PLATFORM=minimal # For desktop2app to find icons from the theme
+mkdir -p /Applications
+find /usr/share/applications/*.desktop -exec desktop2app {} /Applications/ \;
 
 # Download and install components
 cd /
